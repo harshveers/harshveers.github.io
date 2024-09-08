@@ -28,6 +28,8 @@ url: "https://harshveer.me" # the base hostname & protocol for your site, e.g. h
 # twitter_username: sharshveer
 # github_username:  harshveers
 linkedin_username: sharshveer
+disqus:
+  shortname: harshveer
 
 # Build settings
 theme: minima

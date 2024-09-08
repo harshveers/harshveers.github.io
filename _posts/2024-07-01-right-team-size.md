@@ -3,6 +3,7 @@ layout: post
 title:  "What is the right size of a team?"
 date:   2024-07-01 09:00:00 +0530
 categories: engineering management
+comments: true
 ---
 
 I have faced this question multiple times whenever there is a change in team or new team is being created. I am sure other engineering managers(at junior level or senior level) face this situation.
