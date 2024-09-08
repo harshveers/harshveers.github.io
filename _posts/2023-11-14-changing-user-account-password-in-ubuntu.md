@@ -3,7 +3,7 @@ layout: post
 title:  "Changing User Account Password in Ubuntu"
 date:   2023-11-14 09:00:00 +0530
 categories: coding
-comments: false
+comments: true
 ---
 
 Changing your user account password in Ubuntu is fairly simple...

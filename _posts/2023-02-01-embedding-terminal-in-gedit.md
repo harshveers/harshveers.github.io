@@ -3,7 +3,7 @@ layout: post
 title:  "Embedding Terminal in Gedit"
 date:   2023-02-01 09:00:00 +0530
 categories: coding
-comments: false
+comments: true
 ---
 
 You can embed terminal right in gedit in it's bottom panel. Gedit has a plugin called “embedded terminal” which is by default not there in plugin lists of gedit. But you can install all remaining plugins using simple command:

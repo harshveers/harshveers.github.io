@@ -3,7 +3,7 @@ layout: post
 title:  "Automatically Mounting Partitions in Ubuntu"
 date:   2022-03-03 09:00:00 +0530
 categories: coding
-comments: false
+comments: true
 ---
 
 If you have many partitions of your disk then you can see that when you start Ubuntu all partitions doesn't get mounted automatically. If you want all of your partitions or a particular partition to be mounted automatically, it can be done easily with method given below (Taken from Ubuntu documentation).
