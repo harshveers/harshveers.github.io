@@ -242,7 +242,7 @@ def main() -> int:
             return 2
 
     kind = args.kind or guess_kind(url)
-    title, excerpt, date, image_url, slug_hint = None, None, None, None, None
+    title, excerpt, date, image_url, slug_hint, site_name = None, None, None, None, None, None
     notes: list[str] = []
 
     if kind in ("linkedin", "x"):
@@ -258,6 +258,7 @@ def main() -> int:
             title = meta.meta.get("og:title") or meta.meta.get("twitter:title") or meta.title.strip() or None
             excerpt = meta.meta.get("og:description") or meta.meta.get("description") or meta.meta.get("twitter:description")
             image_url = meta.meta.get("og:image") or meta.meta.get("twitter:image")
+            site_name = meta.meta.get("og:site_name")
             date = find_date(meta)
         except Exception as exc:  # noqa: BLE001 - report and fall through to TODOs
             notes.append(f"could not fetch the page: {exc}")
@@ -270,6 +271,10 @@ def main() -> int:
             image_url = f"https://i.ytimg.com/vi/{vid}/maxresdefault.jpg"
 
     title = args.title or (html.unescape(title).strip() if title else None)
+    if title and not args.title:
+        # Page titles often end with the site's name: "Federated Learning in Healthcare AI | Elucidata".
+        for suffix in filter(None, [args.source_name, site_name]):
+            title = re.sub(rf"\s*[|\-\u2013\u2014]\s*{re.escape(suffix)}\s*$", "", title, flags=re.I)
     excerpt = fit_excerpt(args.excerpt) if args.excerpt else fit_excerpt(excerpt)
     date = args.date or date
 

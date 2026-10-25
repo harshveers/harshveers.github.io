@@ -49,7 +49,9 @@ export function groupByYear(items: Item[]): { year: number; items: Item[] }[] {
 }
 
 // Dates are calendar days: always format in UTC so the day never shifts.
-export const shortDate = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/** "24 Oct". Fixed abbreviations: newer ICU versions print "Sept". */
+export const shortDate = (d: Date) => `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 export const longDate = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 export const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
