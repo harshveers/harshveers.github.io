@@ -35,9 +35,14 @@ const footerLinks = [...contactLinks, rssLink];
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121315" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#ffffff" />
+    <script is:inline>
+      // Apply a saved theme before first paint. Light is the default; the system setting is ignored.
+      try {
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={`${site.headline}: writing & appearances`} href={new URL('/rss.xml', SITE_URL).href} />
 
@@ -59,13 +64,21 @@ const footerLinks = [...contactLinks, rssLink];
   </head>
   <body>
     <header class="column site-header">
-      <a class="home" href="/">
-        <span class="monogram serif" aria-hidden="true">HS</span>
-        {site.headline}
-      </a>
-      <nav aria-label="Primary">
-        <a class="pill" href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
-      </nav>
+      <a class="home" href="/">{site.headline}</a>
+      <div class="actions">
+        <nav aria-label="Primary">
+          <a class="pill" href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+        </nav>
+        <button class="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false" hidden>
+          <svg class="moon" aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7z" />
+          </svg>
+          <svg class="sun" aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="10" cy="10" r="3.5" />
+            <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M4 4l1.4 1.4M14.6 14.6L16 16M4 16l1.4-1.4M14.6 5.4L16 4" />
+          </svg>
+        </button>
+      </div>
     </header>
 
     <main>
@@ -74,14 +87,36 @@ const footerLinks = [...contactLinks, rssLink];
 
     <footer class="site-footer">
       <div class="column inner">
-        <span class="copyright">
-          <span class="monogram-sm serif" aria-hidden="true">HS</span>© {year} {site.headline}
-        </span>
+        <span>© {year} {site.headline}</span>
         <nav aria-label="Contact and feeds">
           {footerLinks.map((l) => <a href={l.href} rel={l.external ? 'noopener me' : undefined}>{l.label}</a>)}
         </nav>
       </div>
     </footer>
+    <script is:inline>
+      // The theme toggle: the site's only script. Without JS the button stays hidden and the site is light.
+      (() => {
+        const root = document.documentElement;
+        const button = document.querySelector('.theme-toggle');
+        const meta = document.querySelector('meta[name="theme-color"]');
+        const sync = () => {
+          const dark = root.dataset.theme === 'dark';
+          button.setAttribute('aria-pressed', String(dark));
+          meta.content = dark ? '#121315' : '#ffffff';
+        };
+        button.addEventListener('click', () => {
+          const dark = root.dataset.theme !== 'dark';
+          if (dark) root.dataset.theme = 'dark';
+          else delete root.dataset.theme;
+          try {
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+          } catch {}
+          sync();
+        });
+        sync();
+        button.hidden = false;
+      })();
+    </script>
   </body>
 </html>
 
@@ -97,30 +132,64 @@ const footerLinks = [...contactLinks, rssLink];
   .home {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
     padding: 6px 0;
     color: var(--ink);
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .monogram {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    background: var(--accent);
-    color: var(--on-accent);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   nav[aria-label='Primary'] {
     font-size: 15px;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: none;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Shows the theme you would switch to. */
+  .theme-toggle .sun,
+  :global([data-theme='dark']) .theme-toggle .moon {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle .sun {
+    display: block;
   }
 
   .pill {
@@ -165,25 +234,6 @@ const footerLinks = [...contactLinks, rssLink];
     color: var(--ink-3);
   }
 
-  .copyright {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .monogram-sm {
-    width: 24px;
-    height: 24px;
-    border-radius: var(--radius-sm);
-    background: var(--ink);
-    color: var(--bg);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-  }
-
   .site-footer nav {
     display: flex;
     flex-wrap: wrap;
@@ -205,17 +255,14 @@ const footerLinks = [...contactLinks, rssLink];
       padding-top: 18px;
     }
     .home {
-      gap: 10px;
-      font-size: 15px;
-    }
-    .monogram {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      font-size: 13px;
+      font-size: 14px;
     }
     nav[aria-label='Primary'] {
       font-size: 14px;
+    }
+    .theme-toggle {
+      width: 44px;
+      height: 44px;
     }
     .home {
       min-height: 44px;
@@ -245,11 +292,6 @@ const footerLinks = [...contactLinks, rssLink];
       min-height: 44px;
       display: inline-flex;
       align-items: center;
-    }
-    .monogram-sm {
-      width: 22px;
-      height: 22px;
-      font-size: 10px;
     }
   }
 </style>

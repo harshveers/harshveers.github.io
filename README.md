@@ -1,8 +1,9 @@
 # harshveer.me
 
 Personal site of Harshveer Singh, served at <https://harshveer.me> by GitHub Pages. It is a static
-[Astro](https://astro.build) site with plain CSS and no client-side JavaScript, built entirely from data.
-Pages are never edited by hand.
+[Astro](https://astro.build) site with plain CSS, built entirely from data. Pages are never edited by hand.
+The only script is a small inline one for the light/dark toggle in the header. The site is light by
+default, ignores the system theme, and remembers the visitor's choice in `localStorage`.
 
 | Route | What it is | Built from |
 |---|---|---|
