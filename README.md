@@ -7,13 +7,13 @@ default, ignores the system theme, and remembers the visitor's choice in `localS
 
 | Route | What it is | Built from |
 |---|---|---|
-| `/` | Writing & appearances, grouped by year, newest first | `src/content/items/*.md` |
-| `/about/` | Introduction, experience, focus areas, expertise, education, short bio, links | `src/data/resume.json` + `src/data/site.yaml` |
+| `/` | Home: photo, role and LinkedIn headline, introduction, experience, focus areas, expertise, education, short bio, links | `src/data/resume.json` + `src/data/site.yaml` |
+| `/writing/` | Writing & appearances, grouped by year, newest first | `src/content/items/*.md` |
 | `/writing/<slug>/` | One page per essay (items with `kind: essay`) | the essay's Markdown body |
 | `/rss.xml` (and `/feed.xml`, the old Jekyll path) | RSS of every item | `src/content/items/` |
 | `/404.html`, `/sitemap-index.xml`, `/robots.txt`, `/og/*.png` | generated | |
 
-Old Jekyll URLs keep working: each essay with a `legacy_path` gets a redirect page there, and the old
+Old URLs keep working: `/about/` redirects to `/`, each essay with a `legacy_path` gets a redirect page there, and the old
 post images are still served at `/assets/images/posts/…`. The list of URLs that must keep resolving is
 `tests/legacy-urls.txt`, and CI checks it on every build.
 

@@ -12,8 +12,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // Only real pages: not the 404 or the redirect pages at old Jekyll URLs.
-      filter: (page) => !page.endsWith('/404/') && !page.endsWith('.html'),
+      // Only real pages: not the 404 or the redirect pages at old URLs.
+      filter: (page) => !page.endsWith('/404/') && !page.endsWith('/about/') && !page.endsWith('.html'),
     }),
   ],
 });

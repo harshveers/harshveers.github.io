@@ -15,7 +15,7 @@ interface Props {
   /** Path of the Open Graph image, e.g. /og/default.png. */
   ogImage?: string;
   ogType?: 'website' | 'article' | 'profile';
-  current?: 'about';
+  current?: 'writing';
   jsonLd?: object;
   noindex?: boolean;
 }
@@ -67,7 +67,9 @@ const footerLinks = [...contactLinks, rssLink];
       <a class="home" href="/">{site.headline}</a>
       <div class="actions">
         <nav aria-label="Primary">
-          <a class="pill" href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+          <a class="pill" href="/writing/" aria-label="Writing &amp; appearances" aria-current={current === 'writing' ? 'page' : undefined}>
+            Writing<span class="pill-rest"> &amp; appearances</span>
+          </a>
         </nav>
         <button class="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false" hidden>
           <svg class="moon" aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -139,6 +141,7 @@ const footerLinks = [...contactLinks, rssLink];
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 
   .actions {
@@ -194,6 +197,7 @@ const footerLinks = [...contactLinks, rssLink];
 
   .pill {
     display: inline-block;
+    white-space: nowrap;
     padding: 8px 14px;
     border: 1px solid var(--rule);
     border-radius: var(--radius-pill);
@@ -263,6 +267,13 @@ const footerLinks = [...contactLinks, rssLink];
     .theme-toggle {
       width: 44px;
       height: 44px;
+    }
+  }
+
+  /* Too narrow for the full label next to the name: the pill reads "Writing" (its aria-label stays complete). */
+  @media (max-width: 420px) {
+    .pill-rest {
+      display: none;
     }
     .home {
       min-height: 44px;

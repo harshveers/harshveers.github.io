@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getItems } from '../../lib/items';
+import { site } from '../../lib/site';
+
+const items = await getItems();
+---
+
+<Base title={`Writing & appearances · ${site.headline}`} current="writing">
+  <section class="column" aria-labelledby="writing-h">
+    <h1 id="writing-h" class="page-title">Writing &amp; appearances</h1>
+    <PostList items={items} grouped />
+  </section>
+</Base>
+
+<style>
+  section {
+    padding-top: 96px;
+  }
+  h1 {
+    margin-bottom: 12px;
+  }
+  @media (max-width: 640px) {
+    section {
+      padding-top: 48px;
+    }
+    h1 {
+      margin-bottom: 4px;
+    }
+  }
+</style>

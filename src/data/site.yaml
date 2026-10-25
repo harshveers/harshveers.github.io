@@ -4,16 +4,19 @@
 
 headline: Harshveer Singh
 
+# Your LinkedIn headline, shown under your role next to the photo on the home page.
+profile_headline: Director of Engineering | Cloud & AI/ML Leader | AWS Architect | Data & Security Innovator | Serverless & Microservice
+
 # One sentence. The meta description and Open Graph text for the home page.
 tagline: Director of Engineering at Elucidata, building AI systems for biomedical data.
 
-# The meta description for /about/. Copy from the design's About letter.
+# Copy from the design's About letter. Not shown on the site at the moment.
 focus: Most of my work sits where AI meets data that was never designed for it.
 
-# Shown after the city on /about/ ("Noida, India"); the city itself comes from the resume header.
+# Shown after the city on the home page ("Noida, India"); the city itself comes from the resume header.
 country: India
 
-# "What I work on" on /about/: 3-4 areas, a title and one line each. Copy from the design.
+# "What I work on" on the home page: 3-4 areas, a title and one line each. Copy from the design.
 focus_areas:
   - title: AI in production
     line: Agents and AI systems that hold up on real biomedical data.
@@ -24,7 +27,7 @@ focus_areas:
   - title: Engineering leadership
     line: Building AI capability inside existing teams.
 
-# "Short bio" on /about/, third person, for events and introductions. Copy from the design.
+# "Short bio" on the home page, third person, for events and introductions. Copy from the design.
 bio: >-
   Harshveer Singh is Director of Engineering at Elucidata, where he leads teams building AI systems
   for biomedical data, including a multi-agent AI co-scientist and AI over genomics knowledge graphs.
@@ -36,6 +39,6 @@ socials:
   x: TODO # x.com/<handle>, without the @
   github: harshveers # github.com/<this>; used in JSON-LD sameAs only (not in the design's link rows)
 
-# Your LinkedIn profile photo. When the file exists it appears on /about/ (AVIF/WebP), as the
+# Your LinkedIn profile photo. When the file exists it appears on the home page (AVIF/WebP), as the
 # "Download headshot" link, and on the default Open Graph image. Until then those are left out.
 headshot: src/assets/headshot.jpg

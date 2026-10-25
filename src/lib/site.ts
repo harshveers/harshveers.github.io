@@ -7,6 +7,7 @@ const isTodo = (v: unknown) => typeof v === 'string' && /^\s*TODO/.test(v);
 const schema = z
   .object({
     headline: z.string(),
+    profile_headline: z.string(),
     tagline: z.string(),
     focus: z.string(),
     country: z.string(),
@@ -36,6 +37,7 @@ export const SITE_URL = 'https://harshveer.me';
 
 export const site = {
   ...raw,
+  profile_headline: real(raw.profile_headline),
   tagline: real(raw.tagline),
   focus: real(raw.focus),
   bio: real(raw.bio),
