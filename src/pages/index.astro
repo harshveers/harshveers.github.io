@@ -69,9 +69,8 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
       <h2 id="exp-h" class="section-title">Experience</h2>
       <ol class="timeline">
         {
-          resume.experience.map((company, i) => {
+          resume.experience.map((company) => {
             const current = company.roles.some((r) => r.end === null);
-            const highlights = i === 0 ? company.roles[0].highlights : [];
             return (
               <li class:list={{ current }}>
                 <span class="years">{companyYears(company)}</span>
@@ -83,20 +82,27 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
                   <ul class="roles">
                     {company.roles.map((role) => (
                       <li>
-                        <span>{role.title}</span>
-                        <span class="role-dates">{roleDates(role)}</span>
+                        <div class="role-head">
+                          <span>{role.title}</span>
+                          <span class="role-dates">{roleDates(role)}</span>
+                        </div>
+                        {role.summary.map((p) => (
+                          <p class="summary">
+                            <RichText text={p} />
+                          </p>
+                        ))}
+                        {role.highlights.length > 0 && (
+                          <ul class="highlights">
+                            {role.highlights.map((h) => (
+                              <li>
+                                <RichText text={h} />
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     ))}
                   </ul>
-                  {highlights.length > 0 && (
-                    <ul class="highlights">
-                      {highlights.map((h) => (
-                        <li>
-                          <RichText text={h} />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
               </li>
             );
@@ -340,10 +346,22 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
     font-size: 16px;
   }
 
-  .roles li {
+  /* Each role: title and dates, then its summary paragraphs and highlights from the resume. */
+  .roles > li + li {
+    margin-top: 20px;
+  }
+
+  .role-head {
     display: flex;
     justify-content: space-between;
     gap: 16px;
+    font-weight: 500;
+  }
+
+  .summary {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: var(--ink-2);
   }
 
   .role-dates {
@@ -353,7 +371,7 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
   }
 
   .highlights {
-    margin: 16px 0 0;
+    margin: 12px 0 0;
     padding: 16px 20px 16px 36px;
     display: flex;
     flex-direction: column;
@@ -578,9 +596,12 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
     .roles {
       font-size: 15px;
     }
-    .roles li {
+    .role-head {
       flex-direction: column;
       gap: 0;
+    }
+    .summary {
+      font-size: 14px;
     }
     .role-dates {
       font-size: 13px;
