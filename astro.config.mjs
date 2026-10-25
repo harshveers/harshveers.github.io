@@ -26,7 +26,9 @@ export default defineConfig({
   site: 'https://harshveer.me',
   output: 'static',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  // CSS is inlined into each page: a page cached from an earlier deploy then can't point at a
+  // stylesheet that no longer exists (hashed file names change on every deploy).
+  build: { format: 'directory', inlineStylesheets: 'always' },
   markdown: {
     processor: satteri({ hastPlugins: [externalLinksInNewTab] }),
     // Code blocks are styled with the site's tokens (HANDOFF.md §8), not a highlighter theme.
