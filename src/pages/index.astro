@@ -192,9 +192,10 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
         {
           elsewhere.map((l) => (
             <li>
-              <a href={l.href} rel={l.external ? 'noopener me' : undefined}>
+              <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener me' : undefined}>
                 {l.label}
                 {l.external && ' ↗'}
+                {l.external && <span class="sr-only"> (opens in a new tab)</span>}
               </a>
             </li>
           ))
@@ -210,6 +211,15 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
     --font-serif: var(--font-resume);
     --font-sans: var(--font-resume);
     font-family: var(--font-resume);
+    /* Latin Modern's strokes are thin: secondary text is full ink and labels one step darker, so
+       small text doesn't look faded, and macOS's extra thinning is turned off. */
+    --ink-2: var(--ink);
+    --ink-3: #555b63;
+    -webkit-font-smoothing: auto;
+  }
+
+  :global([data-theme='dark']) .resume-type {
+    --ink-3: #a6abb1;
   }
 
   /* Latin Modern has only regular and bold; headings are bold, as in the resume. */

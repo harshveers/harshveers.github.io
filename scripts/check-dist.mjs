@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Checks the built site in dist/ the way GitHub Pages serves it.
-//   --links   every internal href/src/srcset in every HTML page resolves to a file
+//   --links   every internal href/src/srcset in every HTML page resolves to a file, and every
+//             outside link (http/https to another site) opens in a new tab
 //   --legacy  every path in tests/legacy-urls.txt resolves (directly or via a redirect page)
 // Exits non-zero on any failure.
 
@@ -62,7 +63,15 @@ function checkLinks() {
   let count = 0;
   for (const file of htmlFiles(DIST)) {
     const pagePath = '/' + posix.relative(DIST, file.split('\\').join('/')).replace(/index\.html$/, '');
-    for (const ref of internalRefs(readFileSync(file, 'utf8'), pagePath)) {
+    const html = readFileSync(file, 'utf8');
+    for (const m of html.matchAll(/<a\s[^>]*>/g)) {
+      const href = /\shref="(https?:\/\/[^"]*)"/.exec(m[0])?.[1];
+      if (href && !href.startsWith(ORIGIN) && !/\starget="_blank"/.test(m[0])) {
+        failures++;
+        console.error(`SAME TAB  ${pagePath}  ->  ${href} (outside links must have target="_blank")`);
+      }
+    }
+    for (const ref of internalRefs(html, pagePath)) {
       count++;
       if (!ref.path || !resolvePath(ref.path)) {
         failures++;

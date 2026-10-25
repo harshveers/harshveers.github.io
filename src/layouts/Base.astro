@@ -94,7 +94,18 @@ const footerLinks = [...contactLinks, rssLink];
       <div class="column inner">
         <span>© {year} {site.headline}</span>
         <nav aria-label="Contact and feeds">
-          {footerLinks.map((l) => <a href={l.href} rel={l.external ? 'noopener me' : undefined}>{l.label}</a>)}
+          {
+            footerLinks.map((l) =>
+              l.external ? (
+                <a href={l.href} target="_blank" rel="noopener me">
+                  {l.label}
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </a>
+              ) : (
+                <a href={l.href}>{l.label}</a>
+              ),
+            )
+          }
         </nav>
       </div>
     </footer>

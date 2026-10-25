@@ -11,11 +11,16 @@ const archive = isArchive(item);
 ---
 
 <li>
-  <a class:list={['post', { archive, external: !native }]} href={itemHref(item)} rel={native ? undefined : 'noopener'}>
+  <a
+    class:list={['post', { archive, external: !native }]}
+    href={itemHref(item)}
+    target={native ? undefined : '_blank'}
+    rel={native ? undefined : 'noopener'}
+  >
     <time class="date" datetime={isoDate(item.data.date)}>{shortDate(item.data.date)}</time>
     <span class="title serif">{item.data.title}</span>
     {!archive && <span class="excerpt">{item.data.excerpt}</span>}
-    <span class="kind">{pillLabel(item)}{!native && <span class="sr-only"> (external link)</span>}</span>
+    <span class="kind">{pillLabel(item)}{!native && <span class="sr-only"> (opens in a new tab)</span>}</span>
     <span class="go" aria-hidden="true">
       {
         native ? (
