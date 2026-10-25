@@ -31,8 +31,13 @@ const degreeLine = (e: (typeof resume.education)[number]) =>
 const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} – ${e.end}` : e.start);
 ---
 
-<Base title={site.headline} ogType="profile" jsonLd={person}>
-  <div class="column">
+<Base
+  title={site.headline}
+  ogType="profile"
+  jsonLd={person}
+  preloadFonts={['/fonts/latin-modern/lmr-web-regular.woff2', '/fonts/latin-modern/lmr-web-bold.woff2']}
+>
+  <div class="column resume-type">
     <section aria-labelledby="about-h" class="intro">
       <div class="heading">
         {
@@ -200,6 +205,18 @@ const years = (e: (typeof resume.education)[number]) => (e.end ? `${e.start} –
 </Base>
 
 <style>
+  /* The whole About content is set in the resume's typeface, Latin Modern Roman. */
+  .resume-type {
+    --font-serif: var(--font-resume);
+    --font-sans: var(--font-resume);
+    font-family: var(--font-resume);
+  }
+
+  /* Latin Modern has only regular and bold; headings are bold, as in the resume. */
+  .resume-type :is(h2, h3, dt, .role-head, .institution) {
+    font-weight: 700;
+  }
+
   section {
     padding-top: 80px;
   }

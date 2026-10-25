@@ -17,10 +17,12 @@ interface Props {
   ogType?: 'website' | 'article' | 'profile';
   current?: 'writing';
   jsonLd?: object;
+  /** Font files to preload, e.g. the resume typeface on the home page. */
+  preloadFonts?: string[];
   noindex?: boolean;
 }
 
-const { title, description = site.tagline, ogImage = '/og/default.png', ogType = 'website', current, jsonLd, noindex } = Astro.props;
+const { title, description = site.tagline, ogImage = '/og/default.png', ogType = 'website', current, jsonLd, noindex, preloadFonts = [] } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const image = new URL(ogImage, SITE_URL).href;
 const year = new Date().getUTCFullYear();
@@ -44,6 +46,7 @@ const footerLinks = [...contactLinks, rssLink];
       } catch {}
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {preloadFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
     <link rel="alternate" type="application/rss+xml" title={`${site.headline}: writing & appearances`} href={new URL('/rss.xml', SITE_URL).href} />
 
     <meta property="og:type" content={ogType} />
