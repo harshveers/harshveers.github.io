@@ -27,11 +27,15 @@ focus_areas:
   - title: Engineering leadership
     line: Building AI capability inside existing teams.
 
-# "Short bio" on the home page, third person, for events and introductions. Copy from the design.
+# "Short bio" on the home page, third person, for events and introductions.
 bio: >-
-  Harshveer Singh is Director of Engineering at Elucidata, where he leads teams building AI systems
-  for biomedical data, including a multi-agent AI co-scientist and AI over genomics knowledge graphs.
-  He previously led engineering at CareerBuilder and SumTotal Systems, and holds a B.Tech from IIT Delhi.
+  Harshveer Singh is Director of Engineering at Elucidata, where he leads product engineering teams
+  across front-end, back-end, cloud infrastructure and ML/AI, and heads the company's infrastructure security.
+  His work spans AI systems for biomedical data, from a multi-agent AI co-scientist to ML-powered data curation;
+  cloud-native and on-premise platforms, including moving compute-heavy workloads from AWS to bare metal;
+  lakehouse data products on Snowflake and Databricks; and the SOC 2, HIPAA and GDPR programme.
+  With more than 13 years in software, he previously led engineering teams at CareerBuilder and was a
+  principal engineer at SumTotal Systems. He holds a B.Tech in Engineering Physics from IIT Delhi.
 
 socials:
   email: harshveer1889@gmail.com
