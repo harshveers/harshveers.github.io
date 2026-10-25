@@ -27,14 +27,8 @@ export function formatYm(ym: string | null): string {
   return m ? `${MONTHS[Number(m) - 1]} ${y}` : y;
 }
 
-/** "Mar — Dec 2022" when both ends share a year, else "Jan 2023 — now". */
-export function roleDates(role: Pick<Role, 'start' | 'end'>): string {
-  const [sy] = role.start.split('-');
-  if (role.end && role.end.startsWith(sy) && role.start.includes('-') && role.end.includes('-')) {
-    return `${formatYm(role.start).split(' ')[0]} — ${formatYm(role.end)}`;
-  }
-  return `${formatYm(role.start)} — ${formatYm(role.end)}`;
-}
+/** "Mar 2022 — Dec 2022", "Jan 2023 — now": both ends always carry their year. */
+export const roleDates = (role: Pick<Role, 'start' | 'end'>) => `${formatYm(role.start)} — ${formatYm(role.end)}`;
 
 /** A company's span in years: "2022 — now", "2013 — 2018". */
 export function companyYears(company: Company): string {
