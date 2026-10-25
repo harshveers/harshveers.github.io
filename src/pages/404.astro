@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { getItems } from '../lib/items';
+
+const latest = (await getItems()).slice(0, 3);
+---
+
+<Base title="Page not found" noindex>
+  <section class="column">
+    <h1 class="page-title">Page not found</h1>
+    <p class="lead">That page doesn't exist, or it has moved. <a href="/">Go to the home page</a>, or try something recent:</p>
+    <PostList items={latest} />
+  </section>
+</Base>
+
+<style>
+  section {
+    padding-top: 96px;
+  }
+  .lead {
+    margin: 12px 0 24px;
+    color: var(--ink-2);
+  }
+  @media (max-width: 640px) {
+    section {
+      padding-top: 48px;
+    }
+  }
+</style>

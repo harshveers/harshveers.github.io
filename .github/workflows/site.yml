@@ -1,0 +1,115 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  repository_dispatch:
+    types: [resume-updated]
+  schedule:
+    - cron: '30 2 * * *' # daily, 02:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.event_name == 'pull_request' && github.ref || 'deploy' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_PAT: ${{ secrets.SITE_PAT != '' }}
+      DEPLOYING: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # The resume source lives in a private repo; SITE_PAT is a fine-grained token with read access to it.
+      - name: Check out harshveers/resume
+        if: env.HAS_PAT == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: harshveers/resume
+          token: ${{ secrets.SITE_PAT }}
+          path: .resume
+
+      - name: Choose the resume source
+        run: |
+          if [ "$HAS_PAT" = "true" ]; then
+            echo "RESUME_PATH=$GITHUB_WORKSPACE/.resume/resume.tex" >> "$GITHUB_ENV"
+          elif [ "$DEPLOYING" = "true" ]; then
+            echo "::error::SITE_PAT is not set, so the resume cannot be read. Refusing to deploy."
+            exit 1
+          else
+            echo "::warning::SITE_PAT is not set: this preview uses tests/fixtures/resume.tex, not the live resume."
+            echo "RESUME_PATH=$GITHUB_WORKSPACE/tests/fixtures/resume.tex" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - uses: actions/setup-java@v6 # for the W3C HTML validator
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - run: npm ci
+
+      - name: Resume parser tests
+        run: npm test
+
+      - name: Parse resume
+        run: npm run parse-resume
+
+      - name: astro check
+        run: npx astro check
+
+      - name: Build
+        run: npx astro build
+
+      - name: Internal links
+        run: npm run check:links
+
+      - name: Legacy URLs
+        run: npm run check:legacy | tee legacy-check.txt
+
+      - name: Validate HTML
+        run: npm run validate:html
+
+      - name: Lighthouse
+        run: npx lhci autorun
+
+      - name: Upload preview build
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-preview
+          path: |
+            dist
+            legacy-check.txt
+            .lighthouseci/reports
+          if-no-files-found: ignore
+
+      - name: Upload Pages artifact
+        if: env.DEPLOYING == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

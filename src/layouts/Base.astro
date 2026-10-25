@@ -1,0 +1,255 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/source-serif-4/400.css';
+import '@fontsource/source-serif-4/400-italic.css';
+import '@fontsource/source-serif-4/500.css';
+import '@fontsource/source-serif-4/600.css';
+import '../styles/global.css';
+import { contactLinks, rssLink, site, SITE_URL, xHandle } from '../lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Path of the Open Graph image, e.g. /og/default.png. */
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  current?: 'about';
+  jsonLd?: object;
+  noindex?: boolean;
+}
+
+const { title, description = site.tagline, ogImage = '/og/default.png', ogType = 'website', current, jsonLd, noindex } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const image = new URL(ogImage, SITE_URL).href;
+const year = new Date().getUTCFullYear();
+const footerLinks = [...contactLinks, rssLink];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121315" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.headline}: writing & appearances`} href={new URL('/rss.xml', SITE_URL).href} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.headline} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {xHandle && <meta name="twitter:site" content={`@${xHandle}`} />}
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={image} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <header class="column site-header">
+      <a class="home" href="/">
+        <span class="monogram serif" aria-hidden="true">HS</span>
+        {site.headline}
+      </a>
+      <nav aria-label="Primary">
+        <a class="pill" href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="column inner">
+        <span class="copyright">
+          <span class="monogram-sm serif" aria-hidden="true">HS</span>© {year} {site.headline}
+        </span>
+        <nav aria-label="Contact and feeds">
+          {footerLinks.map((l) => <a href={l.href} rel={l.external ? 'noopener me' : undefined}>{l.label}</a>)}
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 40px;
+  }
+
+  .home {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .monogram {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--on-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  nav[aria-label='Primary'] {
+    font-size: 15px;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    color: var(--ink-2);
+    text-decoration: none;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  .pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .pill[aria-current='page'] {
+    background: var(--accent-soft);
+    border-color: transparent;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .site-footer {
+    margin-top: 120px;
+    background: var(--surface);
+    border-top: 1px solid var(--rule);
+  }
+
+  .site-footer .inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 36px;
+    padding-bottom: 48px;
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+
+  .copyright {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .monogram-sm {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    background: var(--ink);
+    color: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .site-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .site-footer nav a {
+    padding: 6px 0;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .site-footer nav a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .site-header {
+      padding-top: 18px;
+    }
+    .home {
+      gap: 10px;
+      font-size: 15px;
+    }
+    .monogram {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    nav[aria-label='Primary'] {
+      font-size: 14px;
+    }
+    .home {
+      min-height: 44px;
+    }
+    .pill {
+      position: relative;
+      padding: 9px 14px;
+    }
+    /* Keeps the designed 40px pill while giving it a 44px tap target. */
+    .pill::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+    }
+    .site-footer {
+      margin-top: 72px;
+    }
+    .site-footer .inner {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 14px;
+      padding-top: 28px;
+      padding-bottom: 40px;
+    }
+    .site-footer nav a {
+      padding: 8px 0;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .monogram-sm {
+      width: 22px;
+      height: 22px;
+      font-size: 10px;
+    }
+  }
+</style>

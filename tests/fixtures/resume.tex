@@ -1,0 +1,407 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Harshveer Singh's CV},
+    pdfauthor={Harshveer Singh},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\patchcmd{\ps@customFooterStyle}{\thepage}{
+    \color{gray}\textit{\small Harshveer Singh - Page \thepage{} of \pageref*{LastPage}}
+}{}{} % replace number by desired string
+\makeatother
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\Large}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titleformat{\subsection}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 6.0 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Harshveer Singh}
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}Noida}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:harshveer1889@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}harshveer1889@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+91-9000000000}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+91-9000000000}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://harshveer.me//}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}harshveer.me}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://www.linkedin.com/in/sharshveer/}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/sharshveer}}%
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+
+    \section{Introduction}
+
+
+
+        
+        \begin{onecolentry}
+            I have around 13+ years of experience in Software Development domain. I graduated(B.Tech.) from IIT Delhi in 2013, started my career as Software Engineer(III).
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            Started out with technologies and languages like C++, Java, JS, HTML/CSS, SQL. Then progressively started
+adapting new technologies and languages like .NET, C\#, .NET Core, Node.js, AngularJS, Angular, python,
+postgres DB, PWA and mobile app development, ionic, AWS Cloud Services, NoSql DB(dynamo), micro-services
+architecture, Kubernetes, CI/CD tools, log management and monitoring tools, serverless application architecture,
+performance tuning(SQL Queries performance, Application logic performance). I have hands on experience with developing AI and ML solutions.
+With increasing experience, started mentoring new developers, started leading development teams.
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            Right now I am working as Director of Engineering and leading multiple
+product engineering teams(spanning across different tech stacks of front-end, back-end, cloud infra, ML/AI) at
+Elucidata, building and delivering highly scalable, performant cloud native application and ML and AI solutions. Also leading 
+overall infra security framework of company.
+        \end{onecolentry}
+
+
+    
+    \section{Skills \& Technologies}
+
+        \begin{onecolentry}
+            \textbf{Languages:} Python, Node.js, C++, C, C\#, SQL, JavaScript, HTML/CSS
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{Databases:} SQL Server, Postgresql, DynamoDB, Elastic/Open Search
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{Cloud:} AWS(EC2, ECS, Batch, Lambda, S3, EFS, FsX, Eventbridge, API Gateway, IAM, VPC, SNS etc.), Azure(Basic)
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{Frameworks \& Technologies:} .NET, django, Angular, Kubernetes, Dockers, Prometheus, Grafana
+        \end{onecolentry}
+
+    \section{Education}
+
+
+
+        
+        \begin{twocolentry}{
+            
+            
+        \textit{2009 – 2013}}
+            \textbf{Indian Institute of Technology, Delhi}
+
+            \vspace{0.10 cm}
+
+            \textit{B.Tech. in -}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Engineering Physics(Major)
+                \item Computer Science and Engineering(Minor)
+            \end{highlights}
+        \end{onecolentry}
+
+
+
+    
+    \section{Experience}
+        \subsection{Elucidata, Delhi}
+            \begin{twocolentry}{  
+                \textit{\textbf{January 2023 - Present}}}
+                \textbf{Director of Engineering}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                
+                    In my role as Director of Engineering, I work to foster the culture of innovation and research-driven development. My
+responsibilities include strategic leadership, coordinating multiple product engineering teams, hands-
+on technical expertise, improving delivery quality and efficiency, upholding latest industry standards,
+leading security of overall infra.
+
+Engaging actively with a diverse technology stack, I bring hands-on experience in Python, Node.js,
+Angular, and various AWS services. I have experience with designing ML/AI powered solutions, leading a team of ML engineers and 
+development efforts for creating agentic AI solutions for various workflows of applications. 
+My proficiency extends to implementing serverless and microservice enterprise grade applications. 
+I have hands-on experience with architecting applications for Cloud(AWS, Azure, GCP) or 
+for on-premise servers with focus on Reliable, Scalable and Maintainable solutions. 
+I am also leading development efforts of hosting resource intensive applications like bioinformatics pipelines on kubernetes cluster.
+
+                \begin{highlights}
+                    \item Designed a multi-agent AI co-scientist system to help generate hypothesis and experimental designs
+                    \item Improved data curation accuracy and reduced curation time by almost 6x by using ML powered auto curation
+                    \item Created AI system to query graph based knowledge graph of genomics data and generate insights from it
+                    \item Architected solutions using federated learning frameworks for privacy-preserving ML model training on siloed data, adhering to data security compliances
+                    \item Initiated project to bring compute intensive workloads from AWS cloud to baremetal cluster setup
+                    \item Reduced cost of processing by 4x and speed of processing by 2.5x(\hrefWithoutArrow{https://www.elucidata.io/webinars/scaling-compute-for-building-foundation-models-in-biology}{\color{black}Link to Webinar}) for Foundational models
+                    \item Rearchitected managed jobs and jupyter notebooks hosting infrastructure using cloud native services to reduce maintenance to almost zero
+                    \item Designed and architected lakehouse/data warehousing solutions and federated data products on Snowflake \& Databricks to enable scalable analytics for genomics \& clinical data
+                    \item Leading organization security initiatives which includes getting SOC2 compliance certification, HIPAA certification, GDPR compliance, regular VAPT of the platform etc.
+                    \item Aligning individual teams to organizational goals to achieve quarterly org KRAs
+                \end{highlights}
+            \end{onecolentry}
+
+
+            \vspace{0.3 cm}
+
+            \begin{twocolentry}{
+                \textit{\textbf{March 2022 – December 2022}}}
+                \textbf{Sr. Engineering Manager}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    \item As an Engineering Manager I am leading, guiding, mentoring multiple product engineering teams.
+                    \item Working actively hands-on with Python, Node.js, Angular, AWS services. Using serverless approach to
+                    host our webapps on AWS cloud Using Terraform to manage infra.
+                    \item Building and hosting resource intensive applications like jupyter notebooks, dockerised jobs
+                    environment, tools to run bioinformatics pipelines on kubernetes cluster to provide cost effective, fast
+                    and highly available environment.
+                    \item Managing deployments via helm charts on kubernetes cluster.
+                \end{highlights}
+            \end{onecolentry}
+        
+
+        \subsection{CareerBuilder, Noida}
+            \begin{twocolentry}{  
+                \textit{\textbf{December 2018 - March 2022}}}
+                \textbf{Engineering Lead}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    Here at CareerBuilder I am leading teams of developers working on multiple projects. I own complete development cycle of various microservices, some of which I have designed from scratch. I am working mainly with .NET/.NET Core, Node.js, Angular, SQL Server/MySql, various AWS Services.
+
+                    Below are some of the projects I have owned/worked on:
+
+                    \textbf{Communication System}: Designed and implement communication microservice from scratch. This micro service is used by other systems to send and receive 2-way email and SMS. This is implemented in .NET Core and storage is MySql. Deployed in AWS cloud(Packaged in Docker container and deployed in ECS, usage autoscaling), used Jenkins and Terraform scripts for CI/CD. Various services used by this microservice are - AWS Pinpoint, SNS, Lambda, Kinesis, Twilio, SendGrid, SparkPost etc. Owned complete development cycle for this service.
+
+                    \textbf{Document Management System}: System to fill forms and sign documents digitally. Implemented in .NET core and MySql on backend, Angular in frontend. Deployed in AWS cloud(Packaged in Docker container and deployed in ECS, usage autoscaling), used Jenkins and Terraform scripts for CI/CD. Managed complete development cycle for this service.
+
+                    \textbf{Job Processing}: A collection of multiple microservices for processing incoming job postings and various operations related to that. Implemented in Node.js mainly. Completely hosted in AWS cloud(Packaged in Docker container and deployed in ECS) utilizing various AWS services like - S3, Lambda, SQS, SNS, RDS.
+                \end{highlights}
+            \end{onecolentry}
+        
+        
+        \subsection{SumTotal Systems, Hyderabad}
+            \begin{twocolentry}{  
+                \textit{\textbf{May 2018 - December 2018}}}
+                \textbf{Principal Software Engineer}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    Working as Full Stack developer on multiple products in C++, C\#, .NET, SQL, HTML/CSS, JavaScript, AngularJS/Angular4. Working on implementing new features, designing and reviewing architecture, code reviews, mentoring and leading a team developers.
+                \end{highlights}
+            \end{onecolentry}
+
+            \vspace{0.3 cm}
+
+            \begin{twocolentry}{  
+                \textit{\textbf{April 2015 - May 2018}}}
+                \textbf{Sr. Software Design Engineer}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    Working as Full Stack developer on multiple products in C++, C\#, .NET, SQL, HTML/CSS, JavaScript, AngularJS/Angular4. Working on implementing new features.
+                \end{highlights}
+            \end{onecolentry}
+
+            \vspace{0.3 cm}
+
+            \begin{twocolentry}{  
+                \textit{\textbf{August 2013 - March 2015}}}
+                \textbf{Software Design Engineer - II}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    Working on product development in C++, JavaScript, HTML/CSS and SQL. 
+                    My main responsibility is to implement new product features according to requirements.
+                    I have received appreciations from Customer Support for timing flexibility \& quick resolutions.
+                    Received 2 Spot Award for good work in customer satisfaction \& meeting compliances.
+                \end{highlights}
+            \end{onecolentry}
+
+        \subsection{Defence Laboratory, Jodhpur - DRDO}
+            \begin{twocolentry}{  
+                \textit{\textbf{May 2012 - July 2012}}}
+                \textbf{Intern}
+            \end{twocolentry}
+
+            \vspace{0.10 cm}
+            
+            \begin{onecolentry}
+                \begin{highlights}
+                    \item Main area of my internship was Digital Image Processing.
+                    \item Interfaced Mightex and Lumenera camera in C++ and MATLAB.
+                    \item MATLAB scripts to perform Spatial Domain Operations on digital images.
+                    \item MATLAB script for Image Segmentation using Graph Theory \& Normalized Cut.
+                    \item Application for Edge Detection in digital images using Frequency Domain Operators.
+                    \item MATLAB script to Smooth \& Remove Noise in image using low-pass \& nonlinear filters.
+                    \item Algo to select Optimal Bands in Hyperspectral Imaging System using Relative Entropy.
+                \end{highlights}
+            \end{onecolentry}
+
+\end{document}

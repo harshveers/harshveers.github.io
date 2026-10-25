@@ -1,0 +1,16 @@
+---
+import type { RichText } from '../lib/resume';
+
+interface Props {
+  text: RichText;
+}
+
+const { text } = Astro.props;
+---
+
+{
+  text.map((s) => {
+    const inner = s.bold ? <strong>{s.text}</strong> : s.text;
+    return s.href ? <a href={s.href} rel={s.href.startsWith('http') ? 'noopener' : undefined}>{inner}</a> : inner;
+  })
+}

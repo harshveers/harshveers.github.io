@@ -1,0 +1,22 @@
+# Every URL the Jekyll site served on 2026-10-25 (crawled from https://harshveer.me).
+# Each must still resolve in the built site: same path, or a redirect page.
+# Checked by scripts/check-dist.mjs --legacy. One path per line; # starts a comment.
+/
+/404.html
+/about/
+/assets/images/posts/2023-02-01-embedding-terminal-in-gedit/1.png
+/assets/images/posts/2023-02-01-embedding-terminal-in-gedit/2.png
+/assets/images/posts/2023-02-01-embedding-terminal-in-gedit/3.png
+/assets/images/posts/2023-02-01-embedding-terminal-in-gedit/4.png
+/assets/images/posts/2023-11-14-changing-user-account-password-in-ubuntu/1.png
+/assets/main.css
+/assets/minima-social-icons.svg
+/coding/2022/03/03/automatically-mounting-partitions-in-ubuntu
+/coding/2022/03/03/automatically-mounting-partitions-in-ubuntu.html
+/coding/2023/02/01/embedding-terminal-in-gedit
+/coding/2023/02/01/embedding-terminal-in-gedit.html
+/coding/2023/11/14/changing-user-account-password-in-ubuntu
+/coding/2023/11/14/changing-user-account-password-in-ubuntu.html
+/engineering/management/2024/07/01/right-team-size
+/engineering/management/2024/07/01/right-team-size.html
+/feed.xml

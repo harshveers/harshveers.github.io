@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { getItems } from '../lib/items';
+import { resume, currentRole, currentCompany } from '../lib/resume';
+import { profileUrls, site, SITE_URL } from '../lib/site';
+
+const items = await getItems();
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: resume.basics.name,
+  url: `${SITE_URL}/`,
+  jobTitle: currentRole.title,
+  worksFor: { '@type': 'Organization', name: currentCompany.company },
+  alumniOf: resume.education.map((e) => ({ '@type': 'CollegeOrUniversity', name: e.institution })),
+  sameAs: profileUrls,
+};
+---
+
+<Base title={site.headline} jsonLd={person}>
+  <section class="column" aria-labelledby="writing-h">
+    <h1 id="writing-h" class="page-title">Writing &amp; appearances</h1>
+    <PostList items={items} grouped />
+  </section>
+</Base>
+
+<style>
+  section {
+    padding-top: 96px;
+  }
+  h1 {
+    margin-bottom: 12px;
+  }
+  @media (max-width: 640px) {
+    section {
+      padding-top: 48px;
+    }
+    h1 {
+      margin-bottom: 4px;
+    }
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import PostRow from './PostRow.astro';
+import { groupByYear, type Item } from '../lib/items';
+
+interface Props {
+  items: Item[];
+  /** Group under year labels (Home). Without it, a plain list (article footer, 404). */
+  grouped?: boolean;
+}
+
+const { items, grouped = false } = Astro.props;
+---
+
+{
+  grouped ? (
+    groupByYear(items).map(({ year, items }) => (
+      <>
+        <div class="year">
+          <h2>{year}</h2>
+          <span class="rule" />
+        </div>
+        <ol class="posts">
+          {items.map((item) => (
+            <PostRow item={item} />
+          ))}
+        </ol>
+      </>
+    ))
+  ) : (
+    <ol class="posts">
+      {items.map((item) => (
+        <PostRow item={item} />
+      ))}
+    </ol>
+  )
+}
+
+<style>
+  .year {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 36px 0 8px;
+  }
+
+  .year h2 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* The hover background bleeds past the column while the text stays aligned with it. */
+  .posts {
+    list-style: none;
+    margin: 0 -16px;
+    padding: 0;
+  }
+
+  @media (max-width: 640px) {
+    .year {
+      gap: 12px;
+      margin: 32px 0 4px;
+    }
+    .posts {
+      margin: 0;
+    }
+  }
+</style>
